@@ -4,6 +4,10 @@ dist
 dist-ssr
 *.local
 
+# backend
+backend/bin
+backend/obj
+
 # development
 .vscode/*
 .idea
