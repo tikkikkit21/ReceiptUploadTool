@@ -1,9 +1,14 @@
-import { Row, Col, Card, Form, Button, DatePicker, InputNumber, Input, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { Row, Col, Card, Form, Button, DatePicker, InputNumber, Input, Upload, Modal } from 'antd';
+import { UploadOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import './App.css';
 import api from './api';
 
 function App() {
+    const [form] = Form.useForm();
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+    // sends data to backend
     const handleFormSubmit = async (values) => {
         const newReceipt = new FormData();
         newReceipt.append('date', values.date?.format('MM/DD/YYYY'));
@@ -17,14 +22,45 @@ function App() {
                     'Content-Type': 'multipart/form-data'
                 }
             });
+            setIsSuccessModalOpen(true);
         }
         catch (e) {
             console.error(e);
         }
     }
 
+    // handles clicking 'OK' on the success modal
+    const handleSuccessModalOk = () => {
+        setIsSuccessModalOpen(false);
+        form.resetFields();
+    }
+
+    // pop up when receipt is uploaded succesfully
+    const successModal = (
+        <Modal
+            open={isSuccessModalOpen}
+            footer={[
+                <Button key='ok' type='primary' onClick={handleSuccessModalOk}>
+                    OK
+                </Button>
+            ]}
+            title={
+                <span>
+                    <CheckCircleOutlined style={{ color: 'green', marginRight: 8 }} />
+                    Success
+                </span>
+            }
+        >
+            Receipt successfully uploaded!
+        </Modal>
+    );
+
+    // form component for user to input receipt details
     const receiptForm = (
-        <Form onFinish={handleFormSubmit}>
+        <Form
+            onFinish={handleFormSubmit}
+            form={form}
+        >
             <Form.Item
                 label='Date'
                 name='date'
@@ -108,6 +144,7 @@ function App() {
             <h1>Receipt Upload</h1>
             <Col span={12}>
                 <Card>{receiptForm}</Card>
+                {successModal}
             </Col>
         </Row>
     );
