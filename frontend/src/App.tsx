@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Row, Col, Card, Form, Button, DatePicker, InputNumber, Input, Upload, Modal } from 'antd';
-import { UploadOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { UploadOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import './App.css';
 import api from './api';
 
 function App() {
     const [form] = Form.useForm();
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [isFailureModalOpen, setIsFailureModalOpen] = useState(false);
 
     // sends data to backend
     const handleFormSubmit = async (values) => {
@@ -25,6 +26,7 @@ function App() {
             setIsSuccessModalOpen(true);
         }
         catch (e) {
+            setIsFailureModalOpen(true);
             console.error(e);
         }
     }
@@ -52,6 +54,31 @@ function App() {
             }
         >
             Receipt successfully uploaded!
+        </Modal>
+    );
+
+    // handles clicking 'OK on the failure modal
+    const handleFailureModalOk = () => {
+        setIsFailureModalOpen(false);
+    }
+
+    // pop up when uploading receipt encounters an issue
+    const failureModal = (
+        <Modal
+            open={isFailureModalOpen}
+            footer={[
+                <Button key='ok' type='primary' onClick={handleFailureModalOk}>
+                    OK
+                </Button>
+            ]}
+            title={
+                <span>
+                    <CloseCircleOutlined style={{ color: 'red', marginRight: 8 }} />
+                    Error Encountered
+                </span>
+            }
+        >
+            Receipt upload encountered a problem, please try again!
         </Modal>
     );
 
@@ -145,6 +172,7 @@ function App() {
             <Col span={12}>
                 <Card>{receiptForm}</Card>
                 {successModal}
+                {failureModal}
             </Col>
         </Row>
     );
