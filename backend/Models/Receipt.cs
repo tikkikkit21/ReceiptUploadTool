@@ -6,5 +6,5 @@ public class Receipt
     public DateTime Date { get; set; }
     public double Amount { get; set; } = 0.0;
     public string Description { get; set; } = "";
-    public IFormFile Photo { get; set; }
+    public byte[]? Photo { get; set; }
 }
