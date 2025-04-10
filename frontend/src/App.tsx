@@ -85,6 +85,7 @@ function App() {
     // form component for user to input receipt details
     const receiptForm = (
         <Form
+            layout='vertical'
             onFinish={handleFormSubmit}
             form={form}
         >
@@ -168,8 +169,8 @@ function App() {
 
     return (
         <Row justify='center'>
-            <h1>Receipt Upload</h1>
-            <Col span={12}>
+            <Col span={8}>
+                <h1>Receipt Upload</h1>
                 <Card>{receiptForm}</Card>
                 {successModal}
                 {failureModal}
