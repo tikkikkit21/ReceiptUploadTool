@@ -48,17 +48,26 @@ namespace ReceiptAPI.Controllers
         // POST: api/Receipts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Receipt>> PostReceipt(Receipt receipt)
+        public async Task<ActionResult<Receipt>> PostReceipt([FromForm] Receipt receipt, [FromForm] IFormFile photo)
         {
             if (_context.Receipts == null)
             {
                 return Problem("Receipt list is null, unable to add receipt");
             }
 
+            if (photo != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await photo.CopyToAsync(memoryStream);
+                    receipt.Photo = memoryStream.ToArray();
+                }
+            }
+
             _context.Receipts.Add(receipt);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetReceipt", new { id = receipt.Id }, receipt);
+            return CreatedAtAction(nameof(GetReceipt), new { id = receipt.Id }, receipt);
         }
     }
 }

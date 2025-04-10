@@ -1,9 +1,29 @@
 import { Row, Col, Card, Form, Button, DatePicker, InputNumber, Input, Upload } from 'antd';
 import './App.css';
+import api from './api';
 
 function App() {
+    const handleFormSubmit = async (values) => {
+        const newReceipt = new FormData();
+        newReceipt.append('date', values.date?.format('MM/DD/YYYY'));
+        newReceipt.append('amount', values.amount);
+        newReceipt.append('description', values.description);
+        newReceipt.append('photo', values.photo.file);
+
+        try {
+            await api.post('/receipts', newReceipt, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }
+
     const receiptForm = (
-        <Form>
+        <Form onFinish={handleFormSubmit}>
             <Form.Item
                 label='Date'
                 name='date'
@@ -29,7 +49,7 @@ function App() {
                 label='Photo'
                 name='photo'
             >
-                <Upload>
+                <Upload beforeUpload={() => false}>
                     <Button>
                         Upload
                     </Button>
