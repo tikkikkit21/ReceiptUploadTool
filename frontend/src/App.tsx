@@ -3,6 +3,16 @@ import { Row, Col, Card, Form, Button, DatePicker, InputNumber, Input, Upload, M
 import { UploadOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import './App.css';
 import api from './api';
+import moment from 'moment';
+
+interface Receipt {
+    date: moment.Moment;
+    amount: number;
+    description: string;
+    photo: {
+        file: File;
+    };
+}
 
 function App() {
     const [form] = Form.useForm();
@@ -10,10 +20,10 @@ function App() {
     const [isFailureModalOpen, setIsFailureModalOpen] = useState(false);
 
     // sends data to backend
-    const handleFormSubmit = async (values) => {
+    const handleFormSubmit = async (values: Receipt) => {
         const newReceipt = new FormData();
         newReceipt.append('date', values.date?.format('MM/DD/YYYY'));
-        newReceipt.append('amount', values.amount);
+        newReceipt.append('amount', values.amount.toString());
         newReceipt.append('description', values.description);
         newReceipt.append('photo', values.photo.file);
 
