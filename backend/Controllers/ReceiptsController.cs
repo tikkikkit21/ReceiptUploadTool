@@ -4,7 +4,7 @@ using ReceiptAPI.Models;
 
 namespace ReceiptAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/receipts")]
     [ApiController]
     public class ReceiptsController : ControllerBase
     {
