@@ -115,6 +115,7 @@ function App() {
             <Form.Item
                 label='Amount'
                 name='amount'
+                initialValue='0.00'
                 rules={[
                     {
                         required: true,
@@ -122,12 +123,12 @@ function App() {
                     },
                     {
                         type: 'number',
-                        min: 0,
-                        message: 'Amount must be a positive number!',
+                        min: 0.01,
+                        message: 'Amount must be a at least $0.01!',
                     },
                 ]}
             >
-                <InputNumber addonBefore='$' />
+                <InputNumber precision={2} addonBefore='$' />
             </Form.Item>
 
             <Form.Item
