@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Row, Col, Card, Form, Button, DatePicker, InputNumber, Input, Upload } from 'antd';
+import './App.css';
 
 function App() {
-    const [count, setCount] = useState(0)
+    const receiptForm = (
+        <Form>
+            <Form.Item
+                label='Date'
+                name='date'
+            >
+                <DatePicker />
+            </Form.Item>
+
+            <Form.Item
+                label='Amount'
+                name='amount'
+            >
+                <InputNumber />
+            </Form.Item>
+
+            <Form.Item
+                label='Description'
+                name='description'
+            >
+                <Input.TextArea rows={4} />
+            </Form.Item>
+
+            <Form.Item
+                label='Photo'
+                name='photo'
+            >
+                <Upload>
+                    <Button>
+                        Upload
+                    </Button>
+                </Upload>
+            </Form.Item>
+
+            <Form.Item>
+                <Button
+                    type='primary'
+                    htmlType='submit'
+                >
+                    Submit Receipt
+                </Button>
+            </Form.Item>
+        </Form>
+    );
 
     return (
-        <>
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
-        </>
-    )
+        <Row justify='center'>
+            <h1>Receipt Upload</h1>
+            <Col span={12}>
+                <Card>{receiptForm}</Card>
+            </Col>
+        </Row>
+    );
 }
 
-export default App
+export default App;
