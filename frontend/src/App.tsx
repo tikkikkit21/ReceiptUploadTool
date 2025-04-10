@@ -1,4 +1,5 @@
 import { Row, Col, Card, Form, Button, DatePicker, InputNumber, Input, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import './App.css';
 import api from './api';
 
@@ -27,6 +28,12 @@ function App() {
             <Form.Item
                 label='Date'
                 name='date'
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please select a date!',
+                    },
+                ]}
             >
                 <DatePicker />
             </Form.Item>
@@ -34,23 +41,52 @@ function App() {
             <Form.Item
                 label='Amount'
                 name='amount'
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please enter the amount!',
+                    },
+                    {
+                        type: 'number',
+                        min: 0,
+                        message: 'Amount must be a positive number!',
+                    },
+                ]}
             >
-                <InputNumber />
+                <InputNumber addonBefore='$' />
             </Form.Item>
 
             <Form.Item
                 label='Description'
                 name='description'
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please enter a description!',
+                    }
+                ]}
             >
-                <Input.TextArea rows={4} />
+                <Input.TextArea
+                    rows={4}
+                    allowClear
+                />
             </Form.Item>
 
             <Form.Item
                 label='Photo'
                 name='photo'
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please upload a photo!',
+                    }
+                ]}
             >
-                <Upload beforeUpload={() => false}>
-                    <Button>
+                <Upload
+                    beforeUpload={() => false}
+                    accept="image/*"
+                >
+                    <Button icon={<UploadOutlined />}>
                         Upload
                     </Button>
                 </Upload>
